@@ -1,11 +1,25 @@
-#+title:Phonetics translation webservice for renarration web application
-#+AUTHOR: Raj Manvar
-#+DATE: [2016-06-16 Thu]
+#+title:Frontend for audio translation for renarration web services
+#+AUTHOR: Raj Manvar,Raghav Mittal
+#+DATE: [2016-07-01 Thu]
 #+PROPERTY: results output
 #+PROPERTY: exports code
 #+SETUPFILE: ../org-templates/level-1.org
 #+options: ^:nil
 #+LATEX: Literal LaTeX code for export
+
+
+* Introduction 
+
+** role
+   
+   + Get the text whose audio we require
+   + Make a request to the webservice and get the audio .
+
+* Functions used
+
+** get xpath
+
+The following functions are used to get the xpath of the element.
 
 #+BEGIN_SRC js :tangle ../../code/phonetics/annolet_main.js :eval no
 
@@ -36,7 +50,17 @@ function anno_getElementByXpath(xpath) {
   return document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
-//------------------------------------------------------------------------
+
+#+END_SRC
+
+** anno_audio
+
++ This function gets the audio and appends the audio tag with autoplay 
++ Keeps the audio hidden so that only sound gets played.
++ Removes the audio after the audio is played.
+
+#+BEGIN_SRC js :tangle ../../code/phonetics/annolet_main.js :eval no
+
 
 function anno_audio(xpath)
 {
@@ -64,8 +88,13 @@ function anno_audio(xpath)
   }
 }
 
-//------------------------------------------------------------------------
+#+END_SRC
 
+** listenOnSelection
+
+This function makes a request to the anno_audio function on a mouse click.
+
+#+BEGIN_SRC js :tangle ../../code/phonetics/annolet_main.js :eval no
 
 function listenOnSelection(){
   //main function which will execute other functions

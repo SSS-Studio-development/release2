@@ -36,6 +36,27 @@ Following is the list of APIs used for the release.
 |                      |                     |                    |                   |                       |
 
 
+* Imports
+
+** Imports for Python API
+Following imports are used for the flask app.
+
+#+BEGIN_SRC python :tangle ../../code/webservices/app/__init__.py :eval no
+
+from flask import Flask
+from flask import request
+from flask_cors import CORS
+
+app = Flask(__name__)
+
+CORS(app)
+
+
+from app import views
+
+#+END_SRC
+
+
 * APIS
 
 ** Introduction
@@ -186,46 +207,6 @@ def test():
 
 
 
-* Testing
-
-  + For testing the APIs cURL tool has been used to send and receive the response
-  + The tests are included in the test.sh file 
-
-
-* Demo
-
-+ Demo of the test cases running .
-+ Demo of the phonetic translations.
-    
-
-* Future path
-
-+ adding language translation according to the language argument given
-+ giving a personalized view to user of dates and currency when the persistant
-  user database is built.
-
-
-* Imports
-
-** Imports for Python API
-Following imports are used for the flask app.
-
-#+BEGIN_SRC python :tangle ../../code/webservices/app/__init__.py :eval no
-
-from flask import Flask
-from flask import request
-from flask_cors import CORS
-
-app = Flask(__name__)
-
-CORS(app)
-
-
-from app import views
-
-#+END_SRC
-
-
 * run
 
 Running the app
@@ -244,10 +225,63 @@ app.run(debug=True)
 #+END_SRC
 
 
-* setup file
+* Tests
+
+** tests using cURL
+
++ cURL and postman (Chrome application) have been used for testing the
+  webservices.
+
+
+#+BEGIN_SRC bash :tangle ../../code/webservices/tests/test.sh :eval no
+
+#! tests for the rest APIs 
+
+echo "requesting for phoneticd translation of sentence 'between the world we are stuck and between the school' :"
+curl -H "Content-Type: application/json" -X POST -d '{"sentence":"between the world we are stuck and between the school"}' http://localhost:5000/phonetic-trans
+echo
+echo "response received"
+
+echo "requesting for phoneticd translation of word 'excited' :"
+curl -H "Content-Type: application/json" -X POST -d '{"sentence":"excited"}' http://localhost:5000/phonetic-trans
+echo 
+echo "response received"
+
+echo "requesting for phoneticd translation of word 'anonymous' :"
+curl -H "Content-Type: application/json" -X POST -d '{"sentence":"anonymous"}' http://localhost:5000/phonetic-trans
+echo 
+echo "response received"
+
+#+END_SRC
+
+
+#+BEGIN_SRC bash :tangle ../../code/webservices/tests/test_live.sh :eval no
+
+#! tests for the rest APIs 
+
+echo "requesting for phoneticd translation of sentence 'between the world we are stuck and between the school' :"
+curl -H "Content-Type: application/json" -X POST -d '{"sentence":"between the world we are stuck and between the school"}' http://localhost:5000/phonetic-translive
+echo
+echo "response received"
+
+echo "requesting for phoneticd translation of word 'excited' :"
+curl -H "Content-Type: application/json" -X POST -d '{"sentence":"excited"}' http://localhost:5000/phonetic-translive
+echo 
+echo "response received"
+
+echo "requesting for phoneticd translation of word 'anonymous' :"
+curl -H "Content-Type: application/json" -X POST -d '{"sentence":"anonymous"}' http://localhost:5000/phonetic-translive
+echo 
+echo "response received"
+
+#+END_SRC
+
+
+
+* Dependencies
 
 the depedencies of the web application and virtual enviornment setup can be
-done by the following file
+done by the following bash commands.
 
 #+BEGIN_SRC bash :tangle ../../code/webservices/setup.sh :eval no
 
