@@ -1,4 +1,4 @@
-#+title: Python app using selenium library to add the base javascript.
+#+title: Webservice services integration tool - Joiner
 #+AUTHOR: Raghav Mittal
 #+DATE: [2016-06-16 Thu]
 #+PROPERTY: results output
