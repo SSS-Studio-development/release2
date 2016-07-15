@@ -265,9 +265,13 @@ if (anno_getElementByXpath(xpath).id != "mark" || !(anno_getElementByXpath(xpath
      ------
 *** =get_phonetics=
 
-    + This makes a request to the webservices and gets the phonetic translation of
-    the string that is passed to it.
-    + Make sure that the webservice is running if on the local host
+This makes a request to the webservices and gets the phonetic translation of
+the string that is passed to it. It makes an HTTP request to the server with
+json containing the sentence. sentence field is compulsary here as the API by
+the webservice requires it.
+It puts the phonetic translated of the text given in the global variable
+phonetic_trans .
+Make sure that the webservice is running if on the local host .
 
     #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 var phonetic_trans = "default_value";
@@ -298,10 +302,16 @@ function get_phonetics(str){
 
 *** =get_languagetrans()=
 
-    + This makes a request to the webservices and gets the language translation of
-    the string that is passed to it.
-    + Make sure that the webservice is running if on the local host
 
+This makes a request to the webservices and gets the language translation of
+the string that is passed to it. It makes an HTTP request to the server with
+json containing the sentence. sentence field is compulsary here as the API by
+the webservice requires it.
+It takes in three parameters string to be translated, from language and to
+language.
+It puts the language translation of the text given in the global variable
+language_trans .
+Make sure that the webservice is running if on the local host .
 
     #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 function get_languagetrans(str,fr,to){
@@ -327,6 +337,16 @@ function get_languagetrans(str,fr,to){
     #+end_src
 
 *** =anno_phonetic()=
+
+This function is used to put the phonetic translation of the text to its place
+on the webpage. 
+It takes the entire innerhtml of the node specified by the xpath passed and
+uses the function get_phonetics to get the translation. Timer is set here as it
+might take some time to make request to the server and get the response back .
+Till it gets the response back, the global variable phonetic_trans has value
+"default value",after it gets the translation, it replaces the string and sets
+the global variable phonetic_trans back to "default value"
+
 
     #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 //function for getting phonetic
@@ -367,6 +387,16 @@ function anno_phonetic(xpath) {
     #+end_src
 
 *** =anno_language()=
+
+This function is used to put the language translation of the text to its place
+on the webpage. 
+It takes the entire innerhtml of the node specified by the xpath passed and
+uses the function get_language to get the translation. Timer is set here as it
+might take some time to make request to the server and get the response back .
+Till it gets the response back, the global variable language_trans has value
+"default value",after it gets the translation, it replaces the string and sets
+the global variable language_trans back to "default value"
+
 
 #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 //function for getting phonetic
@@ -411,6 +441,7 @@ function anno_language(xpath) {
 This function is used to add audio to annolet . It uses online available API
 which is available [[http://www.voicerss.org/][here]] . It adds an audio tag with required parameters and
 after the audio is played, it deletes it . The audio tag remains hidden.
+And after the audio is played, it deletes the audio tag from the webpage.
 
 #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 
@@ -444,6 +475,12 @@ function anno_audio(xpath)
 #+END_SRC
 
 *** =add_tagging()=
+
+This is the function used to add the menu for tagging webservice, it adds the
+required html, javascript and css for the menu.
+The HTML though added initially is hidden, till the webservice is required
+. whenever required, hidden is removed from the div tag.
+
 #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 
 This function is used to add tagging to annolet. It injects the HTML for the tagging menu and the required styling and javascript
@@ -463,11 +500,13 @@ function add_tagging()
 #+END_SRC
 *** =anno_rtag()=
 
+This is used to remove the hidden tag for the html content of the tagging web
+services. 
+
 #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 
 function anno_rtag(xpath)
 {
-  console.log("remove hidden");
   var temp=document.getElementById("page-wrap");
   console.log(temp);
   document.getElementById("page-wrap").removeAttribute("hidden");
@@ -476,6 +515,10 @@ function anno_rtag(xpath)
 #+END_SRC
 
 *** =anno_edit()=
+
+This function adds the contenteditable property to body, by adding it , the
+entire text on the webpage can be edited.
+
 
 #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 
@@ -490,6 +533,8 @@ function anno_edit(xpath)
 
 #+BEGIN_SRC js :tangle ../../code/annolet/annolet.js :eval no
 
+This function just removes the contenteditable tag if present and hides the menu 
+of the tagging service.
 
 function anno_remove_edit(xpath)
 {
